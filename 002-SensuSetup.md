@@ -62,8 +62,8 @@ Expand-Archive -LiteralPath sensu-go_6.13.0_windows_amd64.zip -DestinationPath .
 ```
 
 ```
-./sensuctl.exe configure -n --url http://sensu.cld.education `
+./sensuctl.exe configure -n --url http://sensu.cld.education/api `
   --username admin `
-  --password "1qa2ws3eD!" `
+  --password "P@ssw0rd!" `
   --namespace default
 ```
