@@ -48,5 +48,22 @@ $body = @{
 } | ConvertTo-Json
 
 Invoke-RestMethod -Method Post -Uri $uri -Body $body -ContentType 'application/json'
+```
 
+## Setup the Sensu CLI
+
+```
+Invoke-WebRequest -Uri https://s3-us-west-2.amazonaws.com/sensu.io/sensu-go/6.13.0/sensu-go_6.13.0_windows_amd64.zip  `
+  -OutFile sensu-go_6.13.0_windows_amd64.zip
+```
+
+```
+Expand-Archive -LiteralPath sensu-go_6.13.0_windows_amd64.zip -DestinationPath .
+```
+
+```
+./sensuctl.exe configure -n --url http://sensu.cld.education `
+  --username admin `
+  --password "1qa2ws3eD!" `
+  --namespace default
 ```
