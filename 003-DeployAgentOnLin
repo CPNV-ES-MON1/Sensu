@@ -1,0 +1,19 @@
+# 003 - Deploy Agent on Linux
+
+* [Deploy agent](https://docs.sensu.io/sensu-go/latest/operations/deploy-sensu/install-sensu/#install-sensuctl)
+
+```
+# Add the Sensu repository
+curl -s https://packagecloud.io/install/repositories/sensu/stable/script.deb.sh | sudo bash
+
+# Install the sensu-go-cli package
+sudo apt-get install sensu-go-cli
+```
+
+```
+sensuctl configure -n \
+--username 'admin' \
+--password 'P@ssw0rd!' \
+--namespace default \
+--url 'http://10.0.99.10:8080'
+```
