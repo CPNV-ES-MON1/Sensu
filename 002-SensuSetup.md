@@ -22,20 +22,22 @@ sudo docker network create sensu
 sudo docker volume create sensu-backend-data
 ```
 
-```
-sudo docker run -d --rm --name sensu-backend \
-  -p 8080:8080 -p 3000:3000 \
-  -v sensu-backend-data:/var/lib/sensu \
-  --network sensu  \
-  sensu/sensu sensu-backend start
-```
+### Setup backend (with autorestart)
 
 ```
-sudo docker run -d --rm --network sensu -p :3030 \
-sensu/sensu sensu-agent start \
---backend-url ws://sensu-backend:8081 --deregister \
---keepalive-interval=5 --keepalive-warning-timeout=10 --subscriptions linux
+# Replace `<username>` and `<password>` with the username and password
+# you want to use for your admin user credentials.
+sudo docker run -v /var/lib/sensu:/var/lib/sensu \
+-d --name sensu-backend \
+-p 3000:3000 -p 8080:8080 -p 8081:8081 \
+-e SENSU_BACKEND_CLUSTER_ADMIN_USERNAME=admin \
+-e SENSU_BACKEND_CLUSTER_ADMIN_PASSWORD=1qa2ws3eD! \
+sensu/sensu:latest \
+sensu-backend start --state-dir /var/lib/sensu/sensu-backend --log-level debug
 ```
+
+
+
 
 ```ps
 $uri = 'http://sensu.cld.education/version'
@@ -50,7 +52,18 @@ $body = @{
 Invoke-RestMethod -Method Post -Uri $uri -Body $body -ContentType 'application/json'
 ```
 
-## Setup the Sensu CLI
+## Setup the Sensu CLI on LIN
+
+```
+sensuctl configure -n \
+--username 'admin' \
+--password '1qa2ws3eD!' \
+--namespace default \
+--url 'http://10.0.99.10:8080'
+``` 
+
+
+## Setup the Sensu CLI on WIN
 
 ```
 Invoke-WebRequest -Uri https://s3-us-west-2.amazonaws.com/sensu.io/sensu-go/6.13.0/sensu-go_6.13.0_windows_amd64.zip  `
